@@ -1,26 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import MainLayout from "./layouts/MainLayout";
+import { Route, Switch } from "react-router-dom";
+import ViewHome from "./components/ViewHome";
+import ViewProfile from "./components/ViewProfile";
+import HeaderLayout from "./layouts/HeaderLayout";
+import { Col, Row } from "antd";
+import FooterLayout from "./layouts/FooterLayout";
+import ViewSales from "./components/ViewSales";
+import ViewSignUp from "./components/ViewSignUp";
 
-function App() {
+const App = () => {
+  const [signedIn, setSignedIn] = useState({});
+  const [products, setProducts] = useState([]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Row>
+        <Col span={24}>
+          <HeaderLayout />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={4}>
+          <MainLayout />
+        </Col>
+        <Col span={20}>
+          <Switch>
+            <Route path="/Home">
+              <ViewHome setProducts={setProducts} setSignedIn={setSignedIn} />
+            </Route>
+            <Route path="/Profile">
+              <ViewProfile signedIn={signedIn} />
+            </Route>
+            <Route path="/Sales">
+              <ViewSales products={products} signedIn={signedIn} />
+            </Route>
+            <Route path="/SignUp">
+              <ViewSignUp setSignedIn={setSignedIn} />
+            </Route>
+          </Switch>
+        </Col>
+        <Col span={24}>
+          <FooterLayout />
+        </Col>
+      </Row>
+    </>
   );
-}
+};
 
 export default App;
